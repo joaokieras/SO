@@ -40,9 +40,9 @@ void queue_print (char *name, queue_t *queue, void print_elem (void*) ) ;
 //------------------------------------------------------------------------------
 // Insere um elemento no final da fila.
 // Condicoes a verificar, gerando msgs de erro:
-// - a fila deve existir ok
-// - o elemento deve existir ok
-// - o elemento nao deve estar em outra fila ok
+// - a fila deve existir
+// - o elemento deve existir
+// - o elemento nao deve estar em outra fila
 // Retorno: 0 se sucesso, <0 se ocorreu algum erro
 
 int queue_append (queue_t **queue, queue_t *elem) ;
@@ -50,13 +50,12 @@ int queue_append (queue_t **queue, queue_t *elem) ;
 //------------------------------------------------------------------------------
 // Remove o elemento indicado da fila, sem o destruir.
 // Condicoes a verificar, gerando msgs de erro:
-// - a fila deve existir ok
-// - a fila nao deve estar vazia ok
-// - o elemento deve existir ok
-// - o elemento deve pertencer a fila indicada ok
+// - a fila deve existir
+// - a fila nao deve estar vazia
+// - o elemento deve existir
+// - o elemento deve pertencer a fila indicada
 // Retorno: 0 se sucesso, <0 se ocorreu algum erro
 
 int queue_remove (queue_t **queue, queue_t *elem) ;
 
 #endif
-
