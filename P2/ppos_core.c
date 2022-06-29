@@ -7,12 +7,14 @@
 // Task Main e contador de IDs devem ser declarados globalmente
 // para podermos utilizá-los em qualquer função
 // taskAtual será um ponteiro para a task executando no momento
+
 task_t taskMain, *taskAtual;
 int numID = 0;
 
 void ppos_init()
 {
     setvbuf(stdout, 0, _IONBF, 0);
+
     // Arruma ponteiros e ID da task Main
     taskMain.prev = NULL;
     taskMain.next = NULL;
@@ -31,9 +33,9 @@ int task_create(task_t *task, void (*start_func)(void *), void *arg)
 {
     char *stack;
     stack = malloc(STACKSIZE);
-    // Verifica se alocação funcionou
     if (stack == NULL)
         return -1;
+
     // Idêntico a contexts.c
     getcontext(&(task->context));
     task->context.uc_stack.ss_sp = stack;
@@ -41,6 +43,7 @@ int task_create(task_t *task, void (*start_func)(void *), void *arg)
     task->context.uc_stack.ss_flags = 0;
     task->context.uc_link = 0;
     makecontext(&(task->context), (void *)(*start_func), 1, arg);
+
     // Arruma ponteiros e ID da nova task
     task->next = NULL;
     task->prev = NULL;
@@ -56,10 +59,10 @@ int task_create(task_t *task, void (*start_func)(void *), void *arg)
 void task_exit(int exit_code)
 {
     #ifdef DEBUG
-    //printf("task_exit: tarefa %d sendo encerrada\n", task->id);
+    printf("task_exit: tarefa %d sendo encerrada\n", taskAtual->id);
     #endif
-    task_t *aux;
-    aux = taskAtual;
+
+    task_t *aux = taskAtual;
     taskAtual = &taskMain;
     swapcontext(&(aux->context), &(taskAtual->context));
     return;
@@ -70,9 +73,8 @@ int task_switch(task_t *task)
     #ifdef DEBUG
     printf("task_switch: mudando do contexto %d -> %d\n", taskAtual->id, task->id);
     #endif
-    task_t *aux;
 
-    aux = taskAtual;
+    task_t *aux = taskAtual;
     taskAtual = task;
     swapcontext(&(aux->context), &(taskAtual->context));
     return 0;
