@@ -22,8 +22,8 @@ void ppos_init()
     taskAtual = &taskMain;
 
     #ifdef DEBUG
-    printf("ppos_init: criada task main id: %d\n", taskMain.id);
-    printf("ppos_init: sistema inicializado\n");
+    //printf("ppos_init: criada task main id: %d\n", taskMain.id);
+    //printf("ppos_init: sistema inicializado\n");
     #endif
 
     return;
@@ -50,7 +50,7 @@ int task_create(task_t *task, void (*start_func)(void *), void *arg)
     task->id = ++numID;
 
     #ifdef DEBUG
-    printf("task_create: criada task com id: %d\n", task->id);
+    //printf("task_create: criada task com id: %d\n", task->id);
     #endif
 
     return 0;
@@ -59,7 +59,7 @@ int task_create(task_t *task, void (*start_func)(void *), void *arg)
 void task_exit(int exit_code)
 {
     #ifdef DEBUG
-    printf("task_exit: tarefa %d sendo encerrada\n", taskAtual->id);
+    //printf("task_exit: tarefa %d sendo encerrada\n", taskAtual->id);
     #endif
 
     task_t *aux = taskAtual;
@@ -71,7 +71,7 @@ void task_exit(int exit_code)
 int task_switch(task_t *task)
 {
     #ifdef DEBUG
-    printf("task_switch: mudando do contexto %d -> %d\n", taskAtual->id, task->id);
+    //printf("task_switch: mudando do contexto %d -> %d\n", taskAtual->id, task->id);
     #endif
 
     task_t *aux = taskAtual;
