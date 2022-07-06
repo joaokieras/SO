@@ -59,11 +59,14 @@ int task_create(task_t *task, void (*start_func)(void *), void *arg)
     task->id = ++numID;
     task->status = NOVA;
     userTask++;
-    queue_append((queue_t **) &queueTask, (queue_t*) task);
+
+    // Na fila não devem ser inseridas as tasks Main nem Dispatcher
+    if(task->id > 1)
+        queue_append((queue_t **) &queueTask, (queue_t*) task);
 
     #ifdef DEBUG
-    printf("task_create: criada task com id: %d\n", task->id);
-    queue_print("Fila de tarefas", (queue_t*) queueTask, print_elem);
+    //printf("task_create: criada task com id: %d\n", task->id);
+    //queue_print("Fila de tarefas", (queue_t*) queueTask, print_elem);
     #endif
 
     return 0;
@@ -76,7 +79,9 @@ void task_exit(int exit_code)
     #endif
 
     task_t *aux = taskAtual;
+    
     userTask--;
+    aux->status = TERMINADA;
 
     if(exit_code == 0)
         taskAtual = &taskMain;
@@ -111,7 +116,22 @@ void task_yield(){
 }
 
 void scheduler(){
-
+    while(userTask > 0){
+        task_t *proxima = (*queueTask).next;
+        if(proxima != NULL){
+            task_switch(proxima);
+            switch(proxima->status){
+                case PRONTA:
+                    proxima->status = EXECUTANDO;
+                    break;
+                
+                case TERMINADA:
+                    task_exit(1);
+                    break;
+            }
+        }
+    }
+    task_exit(0);
 }
 
 void print_elem (void *ptr)
