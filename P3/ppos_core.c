@@ -117,18 +117,22 @@ void task_yield(){
 
 void scheduler(){
     while(userTask > 0){
-        task_t *proxima = (*queueTask).next;
+        task_t *proxima = queueTask;
         if(proxima != NULL){
             task_switch(proxima);
             switch(proxima->status){
                 case PRONTA:
-                    proxima->status = EXECUTANDO;
+                    task_switch((proxima->next));
                     break;                
                 case TERMINADA:
                     task_exit(1);
                     break;
             }
         }
+        #ifdef DEBUG
+        //printf("task_create: criada task com id: %d\n", task->id);
+        //queue_print("Fila de tarefas", (queue_t*) queueTask, print_elem);
+        #endif
     }
     task_exit(0);
 }
