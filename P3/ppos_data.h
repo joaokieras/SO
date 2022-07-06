@@ -12,7 +12,7 @@
 
 #define NOVA 0
 #define PRONTA 1
-#define RODANDO 2
+#define EXECUTANDO 2
 #define TERMINADA 3
 #define SUSPENSA 4
 

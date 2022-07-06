@@ -14,7 +14,7 @@ void print_elem();
 // taskAtual será um ponteiro para a task executando no momento
 
 task_t taskMain, *taskAtual, taskDispatcher, *queueTask;
-int numID = 0;
+int numID = 0, userTask = 0;
 
 void ppos_init()
 {
@@ -24,7 +24,7 @@ void ppos_init()
     taskMain.prev = NULL;
     taskMain.next = NULL;
     taskMain.id = numID;
-    taskMain.status = RODANDO;
+    taskMain.status = EXECUTANDO;
 
     taskAtual = &taskMain;
 
@@ -58,11 +58,12 @@ int task_create(task_t *task, void (*start_func)(void *), void *arg)
     task->prev = NULL;
     task->id = ++numID;
     task->status = NOVA;
+    userTask++;
     queue_append((queue_t **) &queueTask, (queue_t*) task);
-    //queue_print("Fila de tarefas", (queue_t*) queueTask, print_elem);
 
     #ifdef DEBUG
     printf("task_create: criada task com id: %d\n", task->id);
+    queue_print("Fila de tarefas", (queue_t*) queueTask, print_elem);
     #endif
 
     return 0;
@@ -75,7 +76,13 @@ void task_exit(int exit_code)
     #endif
 
     task_t *aux = taskAtual;
-    taskAtual = &taskMain;
+    userTask--;
+
+    if(exit_code == 0)
+        taskAtual = &taskMain;
+    else
+        taskAtual = &taskDispatcher;
+
     swapcontext(&(aux->context), &(taskAtual->context));
     return;
 }
@@ -98,7 +105,9 @@ int task_id()
 }
 
 void task_yield(){
-
+    taskAtual->status = PRONTA;
+    task_switch(&taskDispatcher);
+    return;
 }
 
 void scheduler(){
