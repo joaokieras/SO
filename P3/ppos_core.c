@@ -1,14 +1,19 @@
 // GRR20190379 João Pedro Kieras Oliveira
 #include "ppos.h"
+#include "queue.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 #define DEBUG
+
+void scheduler();
+void print_elem();
+
 // Task Main e contador de IDs devem ser declarados globalmente
 // para podermos utilizá-los em qualquer função
 // taskAtual será um ponteiro para a task executando no momento
 
-task_t taskMain, *taskAtual;
+task_t taskMain, *taskAtual, taskDispatcher, *queueTask;
 int numID = 0;
 
 void ppos_init()
@@ -19,7 +24,11 @@ void ppos_init()
     taskMain.prev = NULL;
     taskMain.next = NULL;
     taskMain.id = numID;
+    taskMain.status = RODANDO;
+
     taskAtual = &taskMain;
+
+    task_create(&taskDispatcher, scheduler, NULL);
 
     #ifdef DEBUG
     //printf("ppos_init: criada task main id: %d\n", taskMain.id);
@@ -48,9 +57,12 @@ int task_create(task_t *task, void (*start_func)(void *), void *arg)
     task->next = NULL;
     task->prev = NULL;
     task->id = ++numID;
+    task->status = NOVA;
+    queue_append((queue_t **) &queueTask, (queue_t*) task);
+    //queue_print("Fila de tarefas", (queue_t*) queueTask, print_elem);
 
     #ifdef DEBUG
-    //printf("task_create: criada task com id: %d\n", task->id);
+    printf("task_create: criada task com id: %d\n", task->id);
     #endif
 
     return 0;
@@ -87,6 +99,22 @@ int task_id()
 
 void task_yield(){
 
+}
+
+void scheduler(){
+
+}
+
+void print_elem (void *ptr)
+{
+   task_t *elem = ptr ;
+
+   if (!elem)
+      return ;
+
+   elem->prev ? printf ("%d", elem->prev->id) : printf ("*") ;
+   printf ("<%d>", elem->id) ;
+   elem->next ? printf ("%d", elem->next->id) : printf ("*") ;
 }
 
 void task_suspend(task_t **queue)
