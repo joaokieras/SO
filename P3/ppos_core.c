@@ -57,7 +57,7 @@ int task_create(task_t *task, void (*start_func)(void *), void *arg)
     task->next = NULL;
     task->prev = NULL;
     task->id = ++numID;
-    task->status = NOVA;
+    task->status = PRONTA;
     userTask++;
 
     // Na fila não devem ser inseridas as tasks Main nem Dispatcher
@@ -123,8 +123,7 @@ void scheduler(){
             switch(proxima->status){
                 case PRONTA:
                     proxima->status = EXECUTANDO;
-                    break;
-                
+                    break;                
                 case TERMINADA:
                     task_exit(1);
                     break;

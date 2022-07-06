@@ -10,11 +10,9 @@
 #include <ucontext.h> // biblioteca POSIX de trocas de contexto
 #define STACKSIZE 64 * 1024
 
-#define NOVA 0
-#define PRONTA 1
-#define EXECUTANDO 2
-#define TERMINADA 3
-#define SUSPENSA 4
+#define PRONTA 0
+#define EXECUTANDO 1
+#define TERMINADA 2
 
 // Estrutura que define um Task Control Block (TCB)
 typedef struct task_t
