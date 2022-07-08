@@ -130,7 +130,6 @@ void scheduler(){
             }
         }
         #ifdef DEBUG
-        //printf("task_create: criada task com id: %d\n", task->id);
         //queue_print("Fila de tarefas", (queue_t*) queueTask, print_elem);
         #endif
     }
