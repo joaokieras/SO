@@ -9,9 +9,10 @@
 void scheduler();
 void print_elem();
 
-// Task Main e contador de IDs devem ser declarados globalmente
-// para podermos utilizá-los em qualquer função
+// Task Main, contador de IDs e  contador de userTask devem ser 
+// declarados globalmente para podermos utilizá-los em qualquer função
 // taskAtual será um ponteiro para a task executando no momento
+// queueTask será a fila de tarefas prontas
 
 task_t taskMain, *taskAtual, taskDispatcher, *queueTask;
 int numID = 0, userTask = 0;
@@ -45,7 +46,6 @@ int task_create(task_t *task, void (*start_func)(void *), void *arg)
     if (stack == NULL)
         return -1;
 
-    // Idêntico a contexts.c
     getcontext(&(task->context));
     task->context.uc_stack.ss_sp = stack;
     task->context.uc_stack.ss_size = STACKSIZE;
@@ -53,16 +53,16 @@ int task_create(task_t *task, void (*start_func)(void *), void *arg)
     task->context.uc_link = 0;
     makecontext(&(task->context), (void *)(*start_func), 1, arg);
 
-    // Arruma ponteiros e ID da nova task
     task->next = NULL;
     task->prev = NULL;
     task->id = ++numID;
     task->status = PRONTA;
-    userTask++;
 
     // Na fila não devem ser inseridas as tasks Main nem Dispatcher
-    if(task->id > 1)
+    if(task->id > 1){
+        userTask++;
         queue_append((queue_t **) &queueTask, (queue_t*) task);
+    }
 
     #ifdef DEBUG
     //printf("task_create: criada task com id: %d\n", task->id);
