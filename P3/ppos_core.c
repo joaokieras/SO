@@ -83,7 +83,7 @@ void task_exit(int exit_code)
     userTask--;
     aux->status = TERMINADA;
 
-    if(exit_code == 0)
+    if(aux == &taskDispatcher)
         taskAtual = &taskMain;
     else
         taskAtual = &taskDispatcher;
@@ -122,10 +122,10 @@ void scheduler(){
             task_switch(proxima);
             switch(proxima->status){
                 case PRONTA:
-                    task_switch((proxima->next));
+                    queueTask = queueTask->next;
                     break;                
                 case TERMINADA:
-                    task_exit(1);
+                    queue_remove((queue_t **) &queueTask, (queue_t *) proxima);
                     break;
             }
         }
