@@ -6,10 +6,12 @@
 
 #define DEBUG
 
-void scheduler();
+void dispatcher();
 void print_elem();
-void task_setprio (task_t *task, int prio);
-int task_getprio (task_t *task);
+void task_setprio(task_t *task, int prio);
+int task_getprio(task_t *task);
+task_t *scheduler();
+void aging(int id);
 
 // Task Main, contador de IDs e  contador de userTask devem ser 
 // declarados globalmente para podermos utilizá-los em qualquer função
@@ -31,7 +33,7 @@ void ppos_init()
 
     taskAtual = &taskMain;
 
-    task_create(&taskDispatcher, scheduler, NULL);
+    task_create(&taskDispatcher, dispatcher, NULL);
 
     #ifdef DEBUG
     //printf("ppos_init: criada task main id: %d\n", taskMain.id);
@@ -59,6 +61,8 @@ int task_create(task_t *task, void (*start_func)(void *), void *arg)
     task->prev = NULL;
     task->id = ++numID;
     task->status = PRONTA;
+    task->pe = 0;
+    task->pd = task->pe;
 
     // Na fila não devem ser inseridas as tasks Main nem Dispatcher
     if(task->id > 1){
@@ -117,14 +121,14 @@ void task_yield(){
     return;
 }
 
-void scheduler(){
+void dispatcher(){
     while(userTask > 0){
-        task_t *proxima = queueTask;
+        task_t *proxima = scheduler();
         if(proxima != NULL){
             task_switch(proxima);
             switch(proxima->status){
                 case PRONTA:
-                    queueTask = queueTask->next;
+                    //queueTask = queueTask->next;
                     break;                
                 case TERMINADA:
                     queue_remove((queue_t **) &queueTask, (queue_t *) proxima);
@@ -151,10 +155,14 @@ void print_elem (void *ptr)
 }
 
 void task_setprio(task_t *task, int prio){
-    if(task != NULL)
+    if(task != NULL){
         task->pe = prio;
-    else
+        task->pd = task->pe;
+    }
+    else{
         taskAtual->pe = prio;
+        taskAtual->pd = taskAtual->pe;
+    }
     return;
 }
 
@@ -162,6 +170,34 @@ int task_getprio(task_t *task){
     if(task != NULL)
         return task->pe;
     return taskAtual->pe;
+}
+
+task_t *scheduler(){
+    task_t *aux = queueTask;
+    task_t *ptr = queueTask->next;
+    //int cont = queue_size((queue_t *) queueTask);
+    while(aux != ptr){
+        if(aux->pd > ptr->pd)
+            aux = ptr;
+        ptr = ptr->next;
+        //cont--;
+    }
+    aging(aux->id);
+    aux->status = EXECUTANDO;
+    aux->pd = aux->pe;
+    return aux;
+}
+
+void aging(int id){
+    task_t *aux = queueTask;
+    int cont = queue_size((queue_t *) queueTask);
+    while(cont > 0){
+        if(aux->id != id)
+            aux->pd--;
+        aux = aux->next;
+        cont--;
+    }
+    return;
 }
 
 void task_suspend(task_t **queue)
