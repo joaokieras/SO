@@ -11,7 +11,8 @@ void print_elem();
 void task_setprio(task_t *task, int prio);
 int task_getprio(task_t *task);
 task_t *scheduler();
-void aging(int id);
+void taskAging(int id);
+task_t *findNextTask();
 
 // Task Main, contador de IDs e  contador de userTask devem ser 
 // declarados globalmente para podermos utilizá-los em qualquer função
@@ -89,8 +90,10 @@ void task_exit(int exit_code)
     userTask--;
     aux->status = TERMINADA;
 
-    if(aux == &taskDispatcher)
+    if(aux == &taskDispatcher){
+        free(taskDispatcher.context.uc_stack.ss_sp);
         taskAtual = &taskMain;
+    } 
     else
         taskAtual = &taskDispatcher;
 
@@ -128,10 +131,10 @@ void dispatcher(){
             task_switch(proxima);
             switch(proxima->status){
                 case PRONTA:
-                    //queueTask = queueTask->next;
                     break;                
                 case TERMINADA:
                     queue_remove((queue_t **) &queueTask, (queue_t *) proxima);
+                    free(proxima->context.uc_stack.ss_sp);
                     break;
             }
         }
@@ -173,22 +176,26 @@ int task_getprio(task_t *task){
 }
 
 task_t *scheduler(){
-    task_t *aux = queueTask;
-    task_t *ptr = queueTask->next;
-    //int cont = queue_size((queue_t *) queueTask);
-    while(aux != ptr){
-        if(aux->pd > ptr->pd)
-            aux = ptr;
-        ptr = ptr->next;
-        //cont--;
-    }
-    aging(aux->id);
+    task_t *aux;
+    aux = findNextTask();
+    taskAging(aux->id);
     aux->status = EXECUTANDO;
     aux->pd = aux->pe;
     return aux;
 }
 
-void aging(int id){
+task_t *findNextTask(){
+    task_t *aux = queueTask;
+    task_t *percorre = queueTask->next;
+    while(aux != percorre){
+        if(aux->pd > percorre->pd)
+            aux = percorre;
+        percorre = percorre->next;
+    }
+    return aux;
+}
+
+void taskAging(int id){
     task_t *aux = queueTask;
     int cont = queue_size((queue_t *) queueTask);
     while(cont > 0){
