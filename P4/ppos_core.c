@@ -126,15 +126,17 @@ void task_yield(){
 
 void dispatcher(){
     while(userTask > 0){
-        task_t *proxima = scheduler();
-        if(proxima != NULL){
-            task_switch(proxima);
-            switch(proxima->status){
+        task_t *nextTask = scheduler();
+        if(nextTask != NULL){
+            task_switch(nextTask);
+            switch(nextTask->status){
                 case PRONTA:
-                    break;                
+                    break; 
+                case EXECUTANDO:
+                    break;               
                 case TERMINADA:
-                    queue_remove((queue_t **) &queueTask, (queue_t *) proxima);
-                    free(proxima->context.uc_stack.ss_sp);
+                    queue_remove((queue_t **) &queueTask, (queue_t *) nextTask);
+                    free(nextTask->context.uc_stack.ss_sp);
                     break;
             }
         }
