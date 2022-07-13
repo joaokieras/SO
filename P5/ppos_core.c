@@ -129,6 +129,7 @@ int task_switch(task_t *task)
 
     task_t *aux = taskAtual;
     taskAtual = task;
+    contTimer = 20;
     swapcontext(&(aux->context), &(taskAtual->context));
     return 0;
 }
@@ -148,7 +149,7 @@ void dispatcher(){
     while(userTask > 0){
         task_t *nextTask = scheduler();
         if(nextTask != NULL){
-            contTimer = 20;
+            //contTimer = 20;
             task_switch(nextTask);
             switch(nextTask->status){
                 case PRONTA:
@@ -232,9 +233,9 @@ void taskAging(int id){
 
 void tratadorSinal(){
     if(taskAtual->id > 1){
-        //printf("contTimer: %d\n", contTimer);
-        contTimer--;
-        if(contTimer <= 0)
+        if(contTimer >= 0 && contTimer <= 20)
+            contTimer--;
+        else
             task_yield();
     }
     return;
