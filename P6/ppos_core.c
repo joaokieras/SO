@@ -16,6 +16,7 @@ task_t *scheduler();
 void taskAging(int id);
 task_t *findNextTask();
 void tratadorSinal();
+unsigned int systime();
 
 // Task Main, contador de IDs e  contador de userTask devem ser 
 // declarados globalmente para podermos utilizá-los em qualquer função
@@ -24,6 +25,7 @@ void tratadorSinal();
 
 task_t taskMain, *taskAtual, taskDispatcher, *queueTask;
 int numID = 0, userTask = 0, contTimer = 20;
+unsigned long timerSys = 0;
 struct itimerval timer;
 struct sigaction action;
 
@@ -86,6 +88,9 @@ int task_create(task_t *task, void (*start_func)(void *), void *arg)
     task->pe = 0;
     task->pd = task->pe;
     task->preemptable = 0;
+    task->timeExec = timerSys;
+    task->timeProc = 0;
+    task->numActivation = 0;
 
     // Na fila não devem ser inseridas as tasks Main nem Dispatcher
     if(task->id > 1){
@@ -112,6 +117,9 @@ void task_exit(int exit_code)
     
     userTask--;
     aux->status = TERMINADA;
+    aux->timeExec = timerSys - aux->timeExec;
+
+    printf("Task %d exit: execution time %d ms, processor time %d ms, %d activations\n", aux->id, aux->timeExec, aux->timeProc, aux->numActivation);
 
     if(aux == &taskDispatcher){
         free(taskDispatcher.context.uc_stack.ss_sp);
@@ -143,6 +151,7 @@ int task_id()
 
 void task_yield(){
     taskAtual->status = PRONTA;
+    taskDispatcher.numActivation++;
     task_switch(&taskDispatcher);
     return;
 }
@@ -152,7 +161,10 @@ void dispatcher(){
         task_t *nextTask = scheduler();
         if(nextTask != NULL){
             contTimer = 20;
+            int tIni = timerSys;
             task_switch(nextTask);
+            int tEnd = timerSys;
+            nextTask->timeProc += tEnd - tIni;
             switch(nextTask->status){
                 case PRONTA:
                     break; 
@@ -207,6 +219,7 @@ task_t *scheduler(){
     taskAging(aux->id);
     aux->status = EXECUTANDO;
     aux->pd = aux->pe;
+    aux->numActivation++;
     return aux;
 }
 
@@ -234,10 +247,15 @@ void taskAging(int id){
 }
 
 void tratadorSinal(){
+    timerSys++;
     contTimer--;
     if(taskAtual->preemptable == 1 && contTimer == 0)
         task_yield();
     return;
+}
+
+unsigned int systime(){
+    return timerSys;
 }
 
 void task_suspend(task_t **queue)
