@@ -13,6 +13,7 @@
 #define PRONTA 0
 #define EXECUTANDO 1
 #define TERMINADA 2
+#define SUSPENSA 3
 
 // Estrutura que define um Task Control Block (TCB)
 typedef struct task_t
@@ -26,6 +27,8 @@ typedef struct task_t
   int timeExec;
   int timeProc;
   int numActivation;
+  int exitCode;
+  struct task_t *queueSuspended; 
                               // ... (outros campos serão adicionados mais tarde)
 } task_t;
 

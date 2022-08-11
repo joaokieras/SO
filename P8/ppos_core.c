@@ -17,13 +17,14 @@ void taskAging(int id);
 task_t *findNextTask();
 void tratadorSinal();
 unsigned int systime();
+int task_join(task_t *task);
 
 // Task Main, contador de IDs e  contador de userTask devem ser 
 // declarados globalmente para podermos utilizá-los em qualquer função
 // taskAtual será um ponteiro para a task executando no momento
-// queueTask será a fila de tarefas prontas
+// queueReady será a fila de tarefas prontas
 
-task_t taskMain, *taskAtual, taskDispatcher, *queueTask;
+task_t taskMain, *taskAtual, taskDispatcher, *queueReady, *queueSleeping;
 int numID = 0, userTask = 0, contTimer = 20;
 unsigned long timerSys = 0;
 struct itimerval timer;
@@ -39,7 +40,7 @@ void ppos_init()
     taskMain.id = numID;
     taskMain.status = EXECUTANDO;
     taskMain.preemptable = 1;
-    queue_append((queue_t **) &queueTask, (queue_t*) &taskMain);
+    queue_append((queue_t **) &queueReady, (queue_t*) &taskMain);
     userTask++;
     taskAtual = &taskMain;
     // Timer
@@ -97,12 +98,12 @@ int task_create(task_t *task, void (*start_func)(void *), void *arg)
     if(task->id > 1){
         userTask++;
         task->preemptable = 1;
-        queue_append((queue_t **) &queueTask, (queue_t*) task);
+        queue_append((queue_t **) &queueReady, (queue_t*) task);
     }
 
     #ifdef DEBUG
     //printf("task_create: criada task com id: %d\n", task->id);
-    //queue_print("Fila de tarefas", (queue_t*) queueTask, print_elem);
+    //queue_print("Fila de tarefas", (queue_t*) queueReady, print_elem);
     #endif
 
     return 0;
@@ -117,8 +118,12 @@ void task_exit(int exit_code)
     task_t *aux = taskAtual;
     
     userTask--;
+    aux->exitCode = exit_code;
     aux->status = TERMINADA;
     aux->timeExec = timerSys - aux->timeExec;
+
+    while(aux->queueSuspended != NULL)
+        task_resume(aux->queueSuspended, &aux->queueSuspended);
 
     printf("Task %d exit: execution time %d ms, processor time %d ms, %d activations\n", aux->id, aux->timeExec, aux->timeProc, aux->numActivation);
 
@@ -172,13 +177,13 @@ void dispatcher(){
                 case EXECUTANDO:
                     break;               
                 case TERMINADA:
-                    queue_remove((queue_t **) &queueTask, (queue_t *) nextTask);
+                    queue_remove((queue_t **) &queueReady, (queue_t *) nextTask);
                     free(nextTask->context.uc_stack.ss_sp);
                     break;
             }
         }
         #ifdef DEBUG
-        //queue_print("Fila de tarefas", (queue_t*) queueTask, print_elem);
+        //queue_print("Fila de tarefas", (queue_t*) queueReady, print_elem);
         #endif
     }
     task_exit(0);
@@ -225,8 +230,8 @@ task_t *scheduler(){
 }
 
 task_t *findNextTask(){
-    task_t *aux = queueTask;
-    task_t *percorre = queueTask->next;
+    task_t *aux = queueReady;
+    task_t *percorre = queueReady->next;
     while(aux != percorre){
         if(aux->pd > percorre->pd)
             aux = percorre;
@@ -236,8 +241,8 @@ task_t *findNextTask(){
 }
 
 void taskAging(int id){
-    task_t *aux = queueTask;
-    int cont = queue_size((queue_t *) queueTask);
+    task_t *aux = queueReady;
+    int cont = queue_size((queue_t *) queueReady);
     while(cont > 0){
         if(aux->id != id)
             aux->pd--;
@@ -259,12 +264,28 @@ unsigned int systime(){
     return timerSys;
 }
 
+int task_join(task_t *task){
+    if(task == NULL || task->status == TERMINADA)
+        return -1;
+    task_suspend(&(task->queueSuspended));
+    return task->exitCode;
+}
+
 void task_suspend(task_t **queue)
 {
+    queue_remove((queue_t **) &queueReady, (queue_t*) taskAtual);
+    taskAtual->status = SUSPENSA;
+    queue_append((queue_t **) queue, (queue_t *) taskAtual);
+    task_yield();
     return;
 }
 
 void task_resume(task_t *task, task_t **queue)
 {
+    if(*queue == NULL)
+        return;
+    queue_remove((queue_t **) queue, (queue_t*) task);
+    task->status = PRONTA;
+    queue_append((queue_t **) &queueReady, (queue_t *) task);
     return;
 }
