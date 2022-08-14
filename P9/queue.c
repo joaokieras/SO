@@ -5,17 +5,17 @@
 int queue_append(queue_t **queue, queue_t *elem){
     // Testa fila
     if(queue == NULL){
-        fprintf(stderr, "### Erro: a fila não existe\n");
+        fprintf(stderr, "###(Append) Erro: a fila não existe\n");
         return -1;
     }
     // Testa elemento
     if(elem == NULL){
-        fprintf(stderr, "### Erro: o elemento não existe\n");
+        fprintf(stderr, "###(Append) Erro: o elemento não existe\n");
         return -1;
     }
     // Testa elemento em outra fila
     if(elem->prev != NULL || elem->next != NULL){
-        fprintf(stderr, "### Erro: o elemento já existe em outra fila\n");
+        fprintf(stderr, "###(Append) Erro: o elemento já existe em outra fila\n");
         return -1;
     }
     // Fila vazia 
@@ -38,22 +38,22 @@ int queue_append(queue_t **queue, queue_t *elem){
 
 int queue_remove(queue_t **queue, queue_t *elem){
     if(queue == NULL){
-        fprintf(stderr, "### Erro: a fila não existe\n");
+        fprintf(stderr, "###(Remove) Erro: a fila não existe\n");
         return -1;
     }
     // Testa fila vazia
     if(*queue == NULL){
-        fprintf(stderr, "### Erro: a fila está vazia\n");
+        fprintf(stderr, "###(Remove) Erro: a fila está vazia\n");
         return -1;
     }
 
     if(elem == NULL){
-        fprintf(stderr, "### Erro: o elemento não existe\n");
+        fprintf(stderr, "###(Remove) Erro: o elemento não existe\n");
         return -1;
     }
     // Testa elemento nulo
     if(elem->prev == NULL || elem->next == NULL){
-        fprintf(stderr, "### Erro: o elemento não pertence a nenhuma fila\n");
+        fprintf(stderr, "###(Remove) Erro: o elemento não pertence a nenhuma fila\n");
         return -1;
     }
 
@@ -71,7 +71,7 @@ int queue_remove(queue_t **queue, queue_t *elem){
         pertence = 1;
 
     if(!pertence){
-       fprintf(stderr, "### Erro: o elemento não pertence a fila\n");
+       fprintf(stderr, "###(Remove) Erro: o elemento não pertence a fila\n");
         return -1; 
     }  
     // Fila com um único elemento

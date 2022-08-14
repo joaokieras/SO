@@ -26,7 +26,7 @@ void awakeTasks();
 // taskAtual será um ponteiro para a task executando no momento
 // queueReady será a fila de tarefas prontas
 
-task_t taskMain, *taskAtual, taskDispatcher, *queueReady, *queueSleeping;
+task_t taskMain, *taskAtual, taskDispatcher, *queueReady, *queueSleeping = NULL;
 int numID = 0, userTask = 0, contTimer = 20;
 unsigned long timerSys = 0;
 struct itimerval timer;
@@ -223,6 +223,9 @@ int task_getprio(task_t *task){
 }
 
 task_t *scheduler(){
+    if(queueReady == NULL)
+        return NULL;
+
     task_t *aux;
     aux = findNextTask();
     taskAging(aux->id);
@@ -233,9 +236,6 @@ task_t *scheduler(){
 }
 
 task_t *findNextTask(){
-    if(queueReady == NULL)
-        return NULL;
-
     task_t *aux = queueReady;
     task_t *percorre = queueReady->next;
     while(aux != percorre){
@@ -303,7 +303,7 @@ void task_suspend(task_t **queue)
 
 void task_resume(task_t *task, task_t **queue)
 {
-    if(*queue == NULL)
+    if(queue == NULL)
         return;
     queue_remove((queue_t **) queue, (queue_t*) task);
     task->status = PRONTA;
