@@ -253,9 +253,12 @@ void awakeTasks() {
     task_t *aux = queueSleeping;
     int cont = queue_size((queue_t *) queueSleeping);
     while(cont > 0){
-        if(timerSys >= aux->timeSleep)
+        if(timerSys >= aux->timeSleep){
             task_resume(aux, &queueSleeping);
-        aux = aux->next;
+            aux = queueSleeping;
+        }
+        else
+            aux = aux->next;
         cont--;
     }
     return;
@@ -288,7 +291,9 @@ unsigned int systime(){
 int task_join(task_t *task){
     if(task == NULL || task->status == TERMINADA)
         return -1;
+    task->preemptable = 0;
     task_suspend(&(task->queueSuspended));
+    task->preemptable = 1;
     return task->exitCode;
 }
 
@@ -305,15 +310,20 @@ void task_resume(task_t *task, task_t **queue)
 {
     if(queue == NULL)
         return;
+
+    task->preemptable = 0;
     queue_remove((queue_t **) queue, (queue_t*) task);
     task->status = PRONTA;
     queue_append((queue_t **) &queueReady, (queue_t *) task);
+    task->preemptable = 1;
     return;
 }
 
 void task_sleep(int t){
+    taskAtual->preemptable = 0;
     queue_remove((queue_t **) &queueReady, (queue_t*) taskAtual);
     taskAtual->timeSleep = timerSys + t;
     queue_append((queue_t **) &queueSleeping, (queue_t *) taskAtual);
+    taskAtual->preemptable = 1;
     task_yield();
 }
