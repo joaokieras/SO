@@ -358,7 +358,7 @@ int sem_down(semaphore_t *s){
     enter_cs(&lock);
     s->cont--;
     if(s->cont < 0){
-        //queue_remove((queue_t **) &queueReady, (queue_t *) taskAtual);
+        queue_remove((queue_t **) &queueReady, (queue_t *) taskAtual);
         taskAtual->status = SUSPENSA;
         queue_append((queue_t **) &(s->queueSem), (queue_t *) taskAtual);
     }
@@ -375,10 +375,10 @@ int sem_up(semaphore_t *s){
     
     enter_cs(&lock);
     s->cont++;
-    if(s->cont >= 0){
+    if(s->cont <= 0){
         queue_remove((queue_t **) &(s->queueSem), (queue_t *) s->queueSem);
-        s->queueSem->status = PRONTA;
-        queue_append((queue_t **) &queueReady, (queue_t*) s->queueSem);
+        taskAtual->status = PRONTA;
+        queue_append((queue_t **) &queueReady, (queue_t *) s->queueSem);
     }
     leave_cs(&lock);
     return 0;
