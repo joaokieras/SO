@@ -315,7 +315,7 @@ void task_suspend(task_t **queue)
 
 void task_resume(task_t *task, task_t **queue)
 {
-    if(queue == NULL)
+    if(queue == NULL || task == NULL)
         return;
 
     task->preemptable = 0;
@@ -358,28 +358,19 @@ int sem_down(semaphore_t *s){
     enter_cs(&lock);
     s->cont--;
     if(s->cont < 0){
-        queue_remove((queue_t **) &queueReady, (queue_t *) taskAtual);
-        taskAtual->status = SUSPENSA;
-        queue_append((queue_t **) &(s->queueSem), (queue_t *) taskAtual);
+        leave_cs(&lock);
+        task_suspend(&(s->queueSem));
     }
-    leave_cs(&lock);
-    if(taskAtual->status == SUSPENSA)
-        task_yield();
+    else
+        leave_cs(&lock);
 
     return 0;
 }
 
 int sem_up(semaphore_t *s){
-    if(s == NULL || queue_size((queue_t *) s->queueSem) == 0)
-        return -1;
-    
     enter_cs(&lock);
     s->cont++;
-    if(s->cont <= 0){
-        queue_remove((queue_t **) &(s->queueSem), (queue_t *) s->queueSem);
-        taskAtual->status = PRONTA;
-        queue_append((queue_t **) &queueReady, (queue_t *) s->queueSem);
-    }
+    task_resume(s->queueSem, &queueReady);
     leave_cs(&lock);
     return 0;
 }
