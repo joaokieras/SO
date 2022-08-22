@@ -370,7 +370,8 @@ int sem_down(semaphore_t *s){
 int sem_up(semaphore_t *s){
     enter_cs(&lock);
     s->cont++;
-    task_resume(s->queueSem, &queueReady);
+    task_t *primeiro = s->queueSem;
+    task_resume(primeiro, &(s->queueSem));
     leave_cs(&lock);
     return 0;
 }

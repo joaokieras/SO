@@ -5,9 +5,8 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
- 
 
-# Make data base, printed on Mon Aug 22 16:00:26 2022
+# Make data base, printed on Mon Aug 22 18:22:39 2022
 
 # Variables
 
@@ -218,7 +217,6 @@ TERM = xterm-256color
 # environment
 VSCODE_PID = 1926
 # variable set hash-table stats:
- 
 # Load=103/1024=10%, Rehash=0, Collisions=10/131=8%
 
 # Pattern-specific Variable Values
@@ -227,9 +225,9 @@ VSCODE_PID = 1926
 
 # Directories
 
-# . (device 2050, inode 12320987): 11 files, no impossibilities.
+# . (device 2050, inode 12320987): 13 files, no impossibilities.
 
-# 11 files, no impossibilities in 1 directories.
+# 13 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -270,7 +268,7 @@ race:
 #  Modification time never checked.
 #  File has not been updated.
 #  recipe to execute (from 'Makefile', line 6):
-	gcc -o teste ppos_core.c pingpong-racecond.c queue.c -Wall
+	gcc -o teste2 ppos_core.c pingpong-racecond.c queue.c -Wall
 
 # Not a target:
 .SUFFIXES:
@@ -278,10 +276,11 @@ race:
 #  Modification time never checked.
 #  File has not been updated.
 
+ 
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-08-22 16:00:22.34289712
+#  Last modified 2022-08-22 18:20:27.316282711
 #  File has been updated.
 #  Successfully updated.
 
@@ -313,12 +312,12 @@ sem:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 19 / storage = 180 B / avg = 9 B
-# current buf: size = 8162 B / used = 180 B / count = 19 / avg = 9 B
+# strcache buffers: 1 (0) / strings = 21 / storage = 193 B / avg = 9 B
+# current buf: size = 8162 B / used = 193 B / count = 21 / avg = 9 B
 
-# strcache performance: lookups = 29 / hit rate = 34%
+# strcache performance: lookups = 31 / hit rate = 32%
 # hash-table stats:
-# Load=19/8192=0%, Rehash=0, Collisions=1/29=3%
-# Finished Make data base on Mon Aug 22 16:00:26 2022
+# Load=21/8192=0%, Rehash=0, Collisions=1/31=3%
+# Finished Make data base on Mon Aug 22 18:22:39 2022
 
  
