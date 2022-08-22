@@ -1,0 +1,5 @@
+make --dry-run --keep-going --print-directory
+make: Entering directory '/home/joao/Documentos/5-periodo/SistemasOperacionais/P10'
+gcc -o teste ppos_core.c pingpong-semaphore.c queue.c -Wall
+make: Leaving directory '/home/joao/Documentos/5-periodo/SistemasOperacionais/P10'
+ 
