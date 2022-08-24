@@ -1,77 +1,41 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # GNU Make 4.2.1
- 
 # Built for x86_64-pc-linux-gnu
- 
 # Copyright (C) 1988-2016 Free Software Foundation, Inc.
- 
 # License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
- 
 # This is free software: you are free to change and redistribute it.
- 
 # There is NO WARRANTY, to the extent permitted by law.
- 
 
- 
-# Make data base, printed on Wed Aug  3 18:52:06 2022
- 
+# Make data base, printed on Thu Aug 11 16:05:15 2022
 
 # Variables
- 
 
- 
 # automatic
- 
 <D = $(patsubst %/,%,$(dir $<))
- 
 # automatic
- 
 ?F = $(notdir $?)
- 
 # environment
- 
 DESKTOP_SESSION = cinnamon
- 
 # default
- 
 .SHELLFLAGS := -c
- 
 # environment
- 
 XDG_SESSION_CLASS = user
- 
 # environment
- 
 XDG_SESSION_TYPE = x11
- 
 # environment
- 
 VSCODE_LOG_NATIVE = false
- 
 # environment
- 
 GTK3_MODULES = xapp-gtk3-module
- 
 # automatic
- 
 ?D = $(patsubst %/,%,$(dir $?))
- 
 # automatic
- 
 @D = $(patsubst %/,%,$(dir $@))
- 
 # environment
- 
 XAUTHORITY = /home/joao/.Xauthority
- 
 # environment
- 
 GDMSESSION = cinnamon
- 
 # default
- 
 MAKE_VERSION := 4.2.1
- 
 # makefile
 CURDIR := /home/joao/Documentos/5-periodo/SistemasOperacionais/P8
 # makefile
@@ -113,7 +77,7 @@ PATH = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/joao-Aspire-E1-572:@/tmp/.ICE-unix/1041,unix/joao-Aspire-E1-572:/tmp/.ICE-unix/1041
+SESSION_MANAGER = local/joao-Aspire-E1-572:@/tmp/.ICE-unix/1084,unix/joao-Aspire-E1-572:/tmp/.ICE-unix/1084
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -145,7 +109,7 @@ QT_QPA_PLATFORMTHEME = qt5ct
 # environment
 XDG_SEAT = seat0
 # environment
-SSH_AGENT_PID = 1131
+SSH_AGENT_PID = 1194
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = X-Cinnamon
 # environment
@@ -185,7 +149,7 @@ MAKECMDGOALS := all
 # environment
 SHLVL = 1
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-0915ea9f-bdce-4bcf-b1e5-d8554d4f811f.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-b7d9b09d-58bd-4beb-ad12-c5ef23a46f09.sock
 # environment
 XDG_SESSION_ID = c2
 # environment
@@ -199,7 +163,7 @@ XDG_CURRENT_DESKTOP = X-Cinnamon
 # default
 MAKE_COMMAND := make
 # environment
-OLDPWD = /home/joao/Documentos/5-periodo/SistemasOperacionais/P7
+OLDPWD = /home/joao
 # default
 .VARIABLES := 
 # automatic
@@ -225,7 +189,7 @@ GDK_BACKEND = x11
 # environment
 QT_ACCESSIBILITY = 1
 # environment
-DESKTOP_AUTOSTART_ID = 109839c361b707b09165956094267982900000010410014
+DESKTOP_AUTOSTART_ID = 106843fc90af62ed75166024454949864800000010840014
 # default
 MAKEFILES := 
 # automatic
@@ -233,11 +197,11 @@ MAKEFILES :=
 # environment
 LC_ALL = C
 # environment
-GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/f707e3d0_c136_4a30_9c6c_aaae93a5772f
+GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/4ab15db7_0552_4b28_aec5_7d25d24521c9
 # automatic
 ^F = $(notdir $^)
 # environment
-GNOME_TERMINAL_SERVICE = :1.142
+GNOME_TERMINAL_SERVICE = :1.140
 # default
 SUFFIXES := 
 # environment
@@ -251,7 +215,7 @@ LANG = C
 # environment
 TERM = xterm-256color
 # environment
-VSCODE_PID = 4409
+VSCODE_PID = 1756
 # variable set hash-table stats:
 # Load=103/1024=10%, Rehash=0, Collisions=10/131=8%
 
@@ -312,6 +276,7 @@ Makefile:
 #  File has been updated.
 #  Successfully updated.
 
+ 
 # Not a target:
 .DEFAULT:
 #  Implicit rule search has not been done.
@@ -339,6 +304,6 @@ clean:
 # strcache performance: lookups = 24 / hit rate = 33%
 # hash-table stats:
 # Load=16/8192=0%, Rehash=0, Collisions=1/24=4%
-# Finished Make data base on Wed Aug  3 18:52:06 2022
+# Finished Make data base on Thu Aug 11 16:05:15 2022
 
  

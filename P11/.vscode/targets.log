@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sun Aug 14 18:46:51 2022
+# Make data base, printed on Wed Aug 24 14:30:18 2022
 
 # Variables
 
@@ -37,7 +37,7 @@ GDMSESSION = cinnamon
 # default
 MAKE_VERSION := 4.2.1
 # makefile
-CURDIR := /home/joao/Documentos/5-periodo/SistemasOperacionais/P9
+CURDIR := /home/joao/Documentos/5-periodo/SistemasOperacionais/P11
 # makefile
 SHELL = /bin/sh
 # environment
@@ -67,7 +67,7 @@ VSCODE_VERBOSE_LOGGING = true
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # environment
-VSCODE_CWD = /home/joao/Documentos/5-periodo/SistemasOperacionais/P9
+VSCODE_CWD = /home/joao/Documentos/5-periodo/SistemasOperacionais/P11
 # environment
 XDG_SESSION_PATH = /org/freedesktop/DisplayManager/Session0
 # default
@@ -77,7 +77,7 @@ PATH = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/joao-Aspire-E1-572:@/tmp/.ICE-unix/1070,unix/joao-Aspire-E1-572:/tmp/.ICE-unix/1070
+SESSION_MANAGER = local/joao-Aspire-E1-572:@/tmp/.ICE-unix/1092,unix/joao-Aspire-E1-572:/tmp/.ICE-unix/1092
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -101,7 +101,7 @@ DISPLAY = :0
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
-PWD = /home/joao/Documentos/5-periodo/SistemasOperacionais/P9
+PWD = /home/joao/Documentos/5-periodo/SistemasOperacionais/P11
 # environment
 QT_QPA_PLATFORMTHEME = qt5ct
 # default
@@ -109,7 +109,7 @@ QT_QPA_PLATFORMTHEME = qt5ct
 # environment
 XDG_SEAT = seat0
 # environment
-SSH_AGENT_PID = 1180
+SSH_AGENT_PID = 1203
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = X-Cinnamon
 # environment
@@ -127,7 +127,7 @@ VSCODE_CODE_CACHE_PATH = /home/joao/.config/Code/CachedData/30d9c6cd9483b2cc5866
 # environment
 LOGNAME = joao
 # environment
-APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
 # environment
 ELECTRON_NO_ATTACH_CONSOLE = 1
 # environment
@@ -149,7 +149,7 @@ MAKECMDGOALS := all
 # environment
 SHLVL = 1
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-9b34cc17-df02-4234-864a-592503c104b7.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-76b35f59-f499-4a4e-b404-b8fa91c25817.sock
 # environment
 XDG_SESSION_ID = c2
 # environment
@@ -163,7 +163,7 @@ XDG_CURRENT_DESKTOP = X-Cinnamon
 # default
 MAKE_COMMAND := make
 # environment
-OLDPWD = /home/joao
+OLDPWD = /home/joao/Documentos/5-periodo
 # default
 .VARIABLES := 
 # automatic
@@ -187,9 +187,11 @@ GDK_BACKEND = x11
 # automatic
 +F = $(notdir $+)
 # environment
+NO_AT_BRIDGE = 1
+# environment
 QT_ACCESSIBILITY = 1
 # environment
-DESKTOP_AUTOSTART_ID = 10d906d89b80c1d43c166051352579047800000010700014
+DESKTOP_AUTOSTART_ID = 10b98ff13024b09f63166136015216613400000010920014
 # default
 MAKEFILES := 
 # automatic
@@ -197,11 +199,11 @@ MAKEFILES :=
 # environment
 LC_ALL = C
 # environment
-GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/65f3147b_ea1f_4d15_a2e0_007188c3574f
+GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/485c33de_da12_4e96_9eed_6c37df04e6f7
 # automatic
 ^F = $(notdir $^)
 # environment
-GNOME_TERMINAL_SERVICE = :1.125
+GNOME_TERMINAL_SERVICE = :1.145
 # default
 SUFFIXES := 
 # environment
@@ -215,9 +217,9 @@ LANG = C
 # environment
 TERM = xterm-256color
 # environment
-VSCODE_PID = 1721
+VSCODE_PID = 4440
 # variable set hash-table stats:
-# Load=103/1024=10%, Rehash=0, Collisions=10/131=8%
+# Load=104/1024=10%, Rehash=0, Collisions=10/132=8%
 
 # Pattern-specific Variable Values
 
@@ -225,9 +227,9 @@ VSCODE_PID = 1721
 
 # Directories
 
-# . (device 2050, inode 12190172): 10 files, no impossibilities.
+# . (device 2050, inode 12321296): 12 files, no impossibilities.
 
-# 10 files, no impossibilities in 1 directories.
+# 12 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -261,7 +263,7 @@ all:
 # variable set hash-table stats:
 # Load=8/32=25%, Rehash=0, Collisions=1/11=9%
 #  recipe to execute (from 'Makefile', line 2):
-	gcc -o teste ppos_core.c pingpong-sleep.c queue.c -Wall
+	gcc -o teste ppos_core.c pingpong-prodcons.c queue.c -Wall
 
 # Not a target:
 .SUFFIXES:
@@ -272,7 +274,7 @@ all:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-08-14 17:12:14.560959581
+#  Last modified 2022-08-24 14:30:16.344282708
 #  File has been updated.
 #  Successfully updated.
 
@@ -287,8 +289,8 @@ clean:
 #  Modification time never checked.
 #  File has not been updated.
 #  recipe to execute (from 'Makefile', line 4):
-	-rm teste 
  
+	-rm teste 
 
 # files hash-table stats:
 # Load=5/1024=0%, Rehash=0, Collisions=0/17=0%
@@ -298,12 +300,12 @@ clean:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 16 / storage = 147 B / avg = 9 B
-# current buf: size = 8162 B / used = 147 B / count = 16 / avg = 9 B
+# strcache buffers: 1 (0) / strings = 18 / storage = 191 B / avg = 10 B
+# current buf: size = 8162 B / used = 191 B / count = 18 / avg = 10 B
 
-# strcache performance: lookups = 24 / hit rate = 33%
+# strcache performance: lookups = 26 / hit rate = 30%
 # hash-table stats:
-# Load=16/8192=0%, Rehash=0, Collisions=1/24=4%
-# Finished Make data base on Sun Aug 14 18:46:51 2022
+# Load=18/8192=0%, Rehash=0, Collisions=1/26=4%
+# Finished Make data base on Wed Aug 24 14:30:18 2022
 
  
