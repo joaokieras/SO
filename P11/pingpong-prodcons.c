@@ -5,6 +5,7 @@
 #include "queue.h"
 
 int item = 0;
+int *queueItems;
 task_t p1, p2, p3, c1, c2;
 semaphore_t s_item, s_buffer, s_vaga;
 
