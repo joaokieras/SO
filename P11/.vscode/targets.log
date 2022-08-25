@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Wed Aug 24 14:30:18 2022
+# Make data base, printed on Thu Aug 25 15:41:01 2022
 
 # Variables
 
@@ -77,7 +77,7 @@ PATH = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/joao-Aspire-E1-572:@/tmp/.ICE-unix/1092,unix/joao-Aspire-E1-572:/tmp/.ICE-unix/1092
+SESSION_MANAGER = local/joao-Aspire-E1-572:@/tmp/.ICE-unix/1058,unix/joao-Aspire-E1-572:/tmp/.ICE-unix/1058
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -109,7 +109,7 @@ QT_QPA_PLATFORMTHEME = qt5ct
 # environment
 XDG_SEAT = seat0
 # environment
-SSH_AGENT_PID = 1203
+SSH_AGENT_PID = 1169
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = X-Cinnamon
 # environment
@@ -149,7 +149,7 @@ MAKECMDGOALS := all
 # environment
 SHLVL = 1
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-76b35f59-f499-4a4e-b404-b8fa91c25817.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-00ae016c-a508-4ed1-880b-97b584e4dd32.sock
 # environment
 XDG_SESSION_ID = c2
 # environment
@@ -163,7 +163,7 @@ XDG_CURRENT_DESKTOP = X-Cinnamon
 # default
 MAKE_COMMAND := make
 # environment
-OLDPWD = /home/joao/Documentos/5-periodo
+OLDPWD = /home/joao
 # default
 .VARIABLES := 
 # automatic
@@ -187,11 +187,9 @@ GDK_BACKEND = x11
 # automatic
 +F = $(notdir $+)
 # environment
-NO_AT_BRIDGE = 1
-# environment
 QT_ACCESSIBILITY = 1
 # environment
-DESKTOP_AUTOSTART_ID = 10b98ff13024b09f63166136015216613400000010920014
+DESKTOP_AUTOSTART_ID = 10afff5dd377f72a48166145275041420600000010580014
 # default
 MAKEFILES := 
 # automatic
@@ -199,11 +197,11 @@ MAKEFILES :=
 # environment
 LC_ALL = C
 # environment
-GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/485c33de_da12_4e96_9eed_6c37df04e6f7
+GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/e923cdd2_aa2f_464e_a8e1_8107fac7b0b2
 # automatic
 ^F = $(notdir $^)
 # environment
-GNOME_TERMINAL_SERVICE = :1.145
+GNOME_TERMINAL_SERVICE = :1.144
 # default
 SUFFIXES := 
 # environment
@@ -217,9 +215,9 @@ LANG = C
 # environment
 TERM = xterm-256color
 # environment
-VSCODE_PID = 4440
+VSCODE_PID = 1764
 # variable set hash-table stats:
-# Load=104/1024=10%, Rehash=0, Collisions=10/132=8%
+# Load=103/1024=10%, Rehash=0, Collisions=10/131=8%
 
 # Pattern-specific Variable Values
 
@@ -288,8 +286,8 @@ clean:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 4):
  
+#  recipe to execute (from 'Makefile', line 4):
 	-rm teste 
 
 # files hash-table stats:
@@ -306,6 +304,6 @@ clean:
 # strcache performance: lookups = 26 / hit rate = 30%
 # hash-table stats:
 # Load=18/8192=0%, Rehash=0, Collisions=1/26=4%
-# Finished Make data base on Wed Aug 24 14:30:18 2022
+# Finished Make data base on Thu Aug 25 15:41:01 2022
 
  
