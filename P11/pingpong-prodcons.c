@@ -78,7 +78,7 @@ void insere_item_buffer(int num){
     for(i = 0;i < TAM_BUFFER;i++){
         if(queueItems[i] == 0){
             queueItems[i] = num;
-            print_fila();
+            //print_fila();
             return;
         }
     }
@@ -88,7 +88,7 @@ void insere_item_buffer(int num){
 
 int retira_item_buffer(){
     int num = queueItems[0];
-    for(int i = 0;i < TAM_BUFFER - 2;i++){
+    for(int i = 0;i < TAM_BUFFER - 1;i++){
         queueItems[i] = queueItems[i + 1];
     }
     queueItems[TAM_BUFFER - 1] = 0;
