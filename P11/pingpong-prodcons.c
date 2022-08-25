@@ -48,17 +48,17 @@ int main(int argc, char *argv[]){
     printf("main: inicio\n");
     ppos_init();
 
+    // Cria semáforos
+    sem_create(&s_item, 0);
+    sem_create(&s_vaga, TAM_BUFFER);
+    sem_create(&s_buffer, TAM_BUFFER);
+
     // Cria tarefas
     task_create(&p1, taskProd, "p1 produziu");
     task_create(&p2, taskProd, "p2 produziu");
     task_create(&p3, taskProd, "p3 produziu");
     task_create(&c1, taskCons, "                c1 consumiu");
     task_create(&c2, taskCons, "                c2 consumiu");
-
-    // Cria semáforos
-    sem_create(&s_item, 0);
-    sem_create(&s_vaga, TAM_BUFFER);
-    sem_create(&s_buffer, TAM_BUFFER);
 
     // Destrói semáforos
     sem_destroy(&s_item);
