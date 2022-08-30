@@ -8,6 +8,7 @@
 #define __PPOS_DATA__
 
 #include <ucontext.h> // biblioteca POSIX de trocas de contexto
+#include "queue.h"
 #define STACKSIZE 64 * 1024
 
 #define PRONTA 0
@@ -29,8 +30,8 @@ typedef struct task_t
   int timeSleep;
   int numActivation;
   int exitCode;
-  struct task_t *queueSuspended; 
-                              // ... (outros campos serão adicionados mais tarde)
+  struct task_t *queueSuspended;
+  // ... (outros campos serão adicionados mais tarde)
 } task_t;
 
 // estrutura que define um semáforo
@@ -52,9 +53,21 @@ typedef struct
   // preencher quando necessário
 } barrier_t;
 
+// estrutura que define um nodo da fila de mensagens
+typedef struct
+{
+  queue_t *next, *prev;
+  char msg[];
+} mnodo_t;
+
 // estrutura que define uma fila de mensagens
 typedef struct
 {
+  mnodo_t *queueMsg;
+  int maxSize;
+  int msgSize;
+  int numMsgs;
+  semaphore_t sem_queue, sem_item, sem_vaga;
   // preencher quando necessário
 } mqueue_t;
 
