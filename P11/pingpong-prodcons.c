@@ -52,7 +52,7 @@ int main(int argc, char *argv[]){
     // Cria semáforos
     sem_create(&s_item, 0);
     sem_create(&s_vaga, TAM_BUFFER);
-    sem_create(&s_buffer, TAM_BUFFER);
+    sem_create(&s_buffer, 1);
 
     // Cria tarefas
     task_create(&p1, taskProd, "p1 produziu");
