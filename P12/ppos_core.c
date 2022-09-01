@@ -31,6 +31,7 @@ int mqueue_create(mqueue_t *queue, int max_msgs, int msg_size);
 int mqueue_send(mqueue_t *queue, void *msg);
 int mqueue_recv(mqueue_t *queue, void *msg);
 int mqueue_destroy(mqueue_t *queue);
+int mqueue_msgs(mqueue_t *queue);
 
 // Task Main, contador de IDs e  contador de userTask devem ser
 // declarados globalmente para podermos utilizá-los em qualquer função
@@ -440,13 +441,17 @@ int mqueue_destroy(mqueue_t *queue)
 {
     if (queue == NULL)
         return -1;
+    mnodo_t *aux = queue->queueMsg;
+    while(aux != NULL){
+        queue_remove((queue_t **)&(queue->queueMsg), (queue_t *)aux);
+        free(aux);
+        aux = queue->queueMsg;
+    }
 
-    sem_destroy(&(queue->sem_queue));
     sem_destroy(&(queue->sem_item));
     sem_destroy(&(queue->sem_vaga));
-
-    if (queue != NULL)
-        free(queue);
+    sem_destroy(&(queue->sem_queue));
+    
     return 0;
 }
 
@@ -454,10 +459,10 @@ int mqueue_send(mqueue_t *queue, void *msg)
 {
     if (queue == NULL || msg == NULL)
         return -1;
-
-    if (sem_down(&(queue->sem_queue)) || sem_down(&(queue->sem_vaga)))
-        return -1;
-
+    sem_down(&(queue->sem_vaga));
+        //return -1;
+    sem_down(&(queue->sem_queue));
+        //return -1;
     // Insere na fila
     mnodo_t *aux = malloc(sizeof(mnodo_t) + sizeof(msg));
     memcpy(aux->msg, msg, queue->msgSize);
@@ -473,8 +478,12 @@ int mqueue_recv(mqueue_t *queue, void *msg)
 {
     if (queue == NULL || msg == NULL)
         return -1;
-    if (sem_down(&(queue->sem_queue)) || sem_down(&(queue->sem_item)))
-        return -1;
+    sem_down(&(queue->sem_item));
+        //return -1;
+    sem_down(&(queue->sem_queue));
+        //return -1;
+
+    if(taskAtual->exitCode != 0) return -1;
 
     // Remove da fila
     mnodo_t *first = queue->queueMsg;
@@ -485,4 +494,10 @@ int mqueue_recv(mqueue_t *queue, void *msg)
     sem_up(&(queue->sem_queue));
     sem_up(&(queue->sem_vaga));
     return 0;
+}
+
+int mqueue_msgs(mqueue_t *queue){
+    if(queue == NULL)
+        return -1;
+    return queue->numMsgs;
 }

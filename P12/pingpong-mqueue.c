@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
    // cria as filas de mensagens (5 valores cada)
    mqueue_create(&queueValores, 5, sizeof(int));
    mqueue_create(&queueRaizes, 5, sizeof(double));
-   printf("Criou filas\n");
+   //printf("Criou filas\n");
 
    // cria as threads
    task_create(&somador, somaBody, NULL);
@@ -108,7 +108,7 @@ int main(int argc, char *argv[])
    task_create(&prod[0], prodBody, NULL);
    task_create(&prod[1], prodBody, NULL);
    task_create(&prod[2], prodBody, NULL);
-   printf("Criou tasks\n");
+   //printf("Criou tasks\n");
 
    // aguarda o somador encerrar
    task_join(&somador);
