@@ -17,8 +17,7 @@
 #define SUSPENSA 3
 
 // Estrutura que define um Task Control Block (TCB)
-typedef struct task_t
-{
+typedef struct task_t {
   struct task_t *prev, *next; // ponteiros para usar em filas
   int id;                     // identificador da tarefa
   ucontext_t context;         // contexto armazenado da tarefa
@@ -35,34 +34,29 @@ typedef struct task_t
 } task_t;
 
 // estrutura que define um semáforo
-typedef struct
-{
+typedef struct {
   int cont;
   struct task_t *queueSem;
 } semaphore_t;
 
 // estrutura que define um mutex
-typedef struct
-{
+typedef struct {
   // preencher quando necessário
 } mutex_t;
 
 // estrutura que define uma barreira
-typedef struct
-{
+typedef struct {
   // preencher quando necessário
 } barrier_t;
 
 // estrutura que define um nodo da fila de mensagens
-typedef struct
-{
+typedef struct {
   queue_t *next, *prev;
   void *msg;
 } mnodo_t;
 
 // estrutura que define uma fila de mensagens
-typedef struct
-{
+typedef struct {
   mnodo_t *queueMsg;
   int maxSize;
   int msgSize;
