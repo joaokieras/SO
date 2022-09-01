@@ -430,10 +430,11 @@ int mqueue_create(mqueue_t *queue, int max_msgs, int msg_size)
     queue->maxSize = max_msgs;
     queue->msgSize = msg_size;
     queue->numMsgs = 0;
+    queue->terminada = 0;
 
-    sem_create(&(queue->sem_queue), 1);
     sem_create(&(queue->sem_item), 0);
     sem_create(&(queue->sem_vaga), max_msgs);
+    sem_create(&(queue->sem_queue), 1);
     return 0;
 }
 
@@ -441,9 +442,12 @@ int mqueue_destroy(mqueue_t *queue)
 {
     if (queue == NULL)
         return -1;
+
     mnodo_t *aux = queue->queueMsg;
-    while(aux != NULL){
+    while (aux != NULL)
+    {
         queue_remove((queue_t **)&(queue->queueMsg), (queue_t *)aux);
+        free(aux->msg);
         free(aux);
         aux = queue->queueMsg;
     }
@@ -451,7 +455,7 @@ int mqueue_destroy(mqueue_t *queue)
     sem_destroy(&(queue->sem_item));
     sem_destroy(&(queue->sem_vaga));
     sem_destroy(&(queue->sem_queue));
-    
+    queue->terminada = 1;
     return 0;
 }
 
@@ -459,12 +463,26 @@ int mqueue_send(mqueue_t *queue, void *msg)
 {
     if (queue == NULL || msg == NULL)
         return -1;
+    if (queue->terminada == 1)
+        return -1;
     sem_down(&(queue->sem_vaga));
-        //return -1;
     sem_down(&(queue->sem_queue));
-        //return -1;
+
     // Insere na fila
-    mnodo_t *aux = malloc(sizeof(mnodo_t) + sizeof(msg));
+    mnodo_t *aux = malloc(sizeof(mnodo_t));
+    if (aux == NULL)
+    {
+        printf("Erro na alocação\n");
+        exit(1);
+    }
+    aux->msg = malloc(sizeof(msg));
+    if (aux == NULL)
+    {
+        printf("Erro na alocação\n");
+        exit(1);
+    }
+    aux->prev = NULL;
+    aux->next = NULL;
     memcpy(aux->msg, msg, queue->msgSize);
     queue_append((queue_t **)&(queue->queueMsg), (queue_t *)aux);
     queue->numMsgs++;
@@ -478,26 +496,29 @@ int mqueue_recv(mqueue_t *queue, void *msg)
 {
     if (queue == NULL || msg == NULL)
         return -1;
+    if (queue->terminada == 1)
+        return -1;
     sem_down(&(queue->sem_item));
-        //return -1;
     sem_down(&(queue->sem_queue));
-        //return -1;
-
-    if(taskAtual->exitCode != 0) return -1;
 
     // Remove da fila
+    if (queue->queueMsg == NULL)
+        return -1;
     mnodo_t *first = queue->queueMsg;
     memcpy(msg, first->msg, queue->msgSize);
     queue_remove((queue_t **)&(queue->queueMsg), (queue_t *)first);
     queue->numMsgs--;
+    free(first->msg);
+    free(first);
 
     sem_up(&(queue->sem_queue));
     sem_up(&(queue->sem_vaga));
     return 0;
 }
 
-int mqueue_msgs(mqueue_t *queue){
-    if(queue == NULL)
+int mqueue_msgs(mqueue_t *queue)
+{
+    if (queue == NULL)
         return -1;
     return queue->numMsgs;
 }

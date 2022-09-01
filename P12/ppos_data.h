@@ -57,7 +57,7 @@ typedef struct
 typedef struct
 {
   queue_t *next, *prev;
-  char msg[];
+  void *msg;
 } mnodo_t;
 
 // estrutura que define uma fila de mensagens
@@ -67,6 +67,7 @@ typedef struct
   int maxSize;
   int msgSize;
   int numMsgs;
+  int terminada;
   semaphore_t sem_queue, sem_item, sem_vaga;
   // preencher quando necessário
 } mqueue_t;
